@@ -1,5 +1,8 @@
 name: "Recursive HTML Directory Listing"
 description: "Generates index.html directory listings in every folder recursively using tree"
+branding:
+  icon: archive
+  color: yellow
 inputs:
   dir:
     description: "Starting directory (default is current directory)"
