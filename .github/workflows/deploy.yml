@@ -34,7 +34,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Make example test directorys and files
+      - name: Make example test directorys and files # Remove this too
         run: |
           mkdir -p test
           touch test/test.txt
