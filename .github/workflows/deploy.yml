@@ -46,8 +46,8 @@ jobs:
           mkdir -p otherfolder
           touch otherfolder/otherfile.txt
 
-      - name: Test this action
-        uses: ./ # Use this action
+      - name: Create HTML Directory Listings
+        uses: ./ # If you are using this as a example, change this to ElliNet13/html-dir-list@version
         with:
           dir: "."
           hideDotFiles: true
