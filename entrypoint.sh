@@ -13,19 +13,28 @@ fi
 ROOT=$(realpath "$ROOT")
 
 echo "Generating recursive HTML directory listings from: $ROOT"
-echo "Exclude dotfiles: $EXCLUDE_DOTFILES"
+echo "Exclude dotfiles: $EXCLUDE_DOTFILES (always excluding .git)"
 
 # Build find command dynamically
 if [[ "$EXCLUDE_DOTFILES" == "true" ]]; then
-    # Exclude hidden directories (starting with .)
-    FIND_CMD=(find "$ROOT" -type d -name ".*" -prune -o -type d -print)
+    # Exclude .git and all hidden directories
+    FIND_CMD=(find "$ROOT" \
+        \( -name ".git" -o -name ".*" \) -type d -prune -o \
+        -type d -print)
 else
-    FIND_CMD=(find "$ROOT" -type d -print)
+    # Only exclude .git
+    FIND_CMD=(find "$ROOT" \
+        -name ".git" -type d -prune -o \
+        -type d -print)
 fi
 
 # Run find and process each directory
 "${FIND_CMD[@]}" | while read -r DIR; do
-    TITLE="Directory listing of: $(realpath "$DIR")"
+    # Get path relative to root
+    REL_PATH=$(realpath --relative-to="$ROOT" "$DIR")
+    [[ "$REL_PATH" == "." ]] && REL_PATH=""  # root folder shows as /
+    TITLE="Directory listing of: /$REL_PATH"
+
     echo "Processing: $DIR"
 
     if [[ "$EXCLUDE_DOTFILES" == "true" ]]; then
