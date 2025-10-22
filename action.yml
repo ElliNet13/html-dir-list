@@ -1,15 +1,19 @@
-name: "HTML Directory Listing"
-description: "Recursively generates an HTML directory listing using tree"
+name: "Recursive HTML Directory Listing"
+description: "Generates index.html directory listings in every folder recursively using tree"
 inputs:
   dir:
-    description: "Directory to list (default is current directory)"
+    description: "Starting directory (default is current directory)"
     required: false
     default: "."
+  hideDotFiles:
+    description: "Hide dot files (default is false)"
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
-    - name: Generate HTML directory listing
+    - name: Generate recursive HTML listings
       shell: bash
       run: |
         chmod +x ${{ github.action_path }}/entrypoint.sh
-        ${{ github.action_path }}/entrypoint.sh "${{ inputs.dir }}"
+        ${{ github.action_path }}/entrypoint.sh "${{ inputs.dir }}" ${{ inputs.hideDotFiles }}
