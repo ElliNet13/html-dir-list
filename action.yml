@@ -1,0 +1,15 @@
+name: "HTML Directory Listing"
+description: "Recursively generates an HTML directory listing using tree"
+inputs:
+  dir:
+    description: "Directory to list (default is current directory)"
+    required: false
+    default: "."
+runs:
+  using: "composite"
+  steps:
+    - name: Generate HTML directory listing
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/entrypoint.sh
+        ${{ github.action_path }}/entrypoint.sh "${{ inputs.dir }}"
