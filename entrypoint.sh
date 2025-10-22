@@ -3,6 +3,7 @@ set -e
 
 ROOT="${1:-.}"
 EXCLUDE_DOTFILES="${2:-false}"
+SHOW_LAST_MODIFIED="${3:-false}"
 
 # Check for tree
 if ! command -v tree &> /dev/null; then
@@ -14,6 +15,7 @@ ROOT=$(realpath "$ROOT")
 
 echo "Generating recursive HTML directory listings from: $ROOT"
 echo "Exclude dotfiles: $EXCLUDE_DOTFILES (always excluding .git)"
+echo "Show last modified dates: $SHOW_LAST_MODIFIED"
 
 # Build find command dynamically
 if [[ "$EXCLUDE_DOTFILES" == "true" ]]; then
@@ -37,22 +39,18 @@ fi
 
     echo "Processing: $DIR"
 
+    # Build ignore pattern
     if [[ "$EXCLUDE_DOTFILES" == "true" ]]; then
         IGNORE_PATTERN='index.html|.*'
     else
         IGNORE_PATTERN='index.html'
     fi
 
-    tree -H '.' \
-         -L 1 \
-         --noreport \
-         --dirsfirst \
-         -T "$TITLE" \
-         -s -D \
-         --charset utf-8 \
-         -I "$IGNORE_PATTERN" \
-         -o "$DIR/index.html" \
-         "$DIR"
+    # Decide tree options
+    TREE_OPTS=(-H '.' -L 1 --noreport --dirsfirst -T "$TITLE" --charset utf-8 -I "$IGNORE_PATTERN" -o "$DIR/index.html" "$DIR")
+    [[ "$SHOW_LAST_MODIFIED" == "true" ]] && TREE_OPTS+=(-s -D)
+
+    tree "${TREE_OPTS[@]}"
 done
 
 echo "All directory listings generated successfully."
