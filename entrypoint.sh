@@ -2,7 +2,7 @@
 set -e
 
 ROOT="${1:-.}"
-EXCLUDE_DOTFILES="${2:-false}"
+EXCLUDE_DOTFILES="${2:-true}"
 SHOW_LAST_MODIFIED="${3:-false}"
 
 # Check for tree

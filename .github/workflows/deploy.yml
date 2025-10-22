@@ -51,6 +51,7 @@ jobs:
         with:
           dir: "."
           hideDotFiles: true
+          displayLastModified: false
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
