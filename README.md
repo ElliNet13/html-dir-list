@@ -17,4 +17,4 @@ with:
 Check the releases if you want to make sure it won't update or if you want always the latest code you can use `main`.
 
 # More Examples
-Check `.github/workflows/deploy.yml` of this repo.
+Check `.github/workflows/deploy.yml` of this repo. (Click source code on the side)
