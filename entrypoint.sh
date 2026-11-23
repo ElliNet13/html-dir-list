@@ -53,6 +53,12 @@ fi
     [[ "$SHOW_LAST_MODIFIED" == "true" ]] && TREE_OPTS+=(-s -D)
 
     (cd "$DIR" && tree "${TREE_OPTS[@]}")
+
+    # Different tree versions put different prefixes in the hrefs ("./", "/",
+    # full paths...). Reduce each href to the entry's own name (keeping a
+    # trailing "/" on directories) so links always resolve relative to the
+    # folder the page is served from, e.g. /a/ + b/ -> /a/b/
+    sed -i -E 's|href="([^"]*/)?([^"/]+)(/?)"|href="\2\3"|g' "$DIR/index.html"
 done
 
 echo "All directory listings generated successfully."
