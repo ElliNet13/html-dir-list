@@ -46,11 +46,13 @@ fi
         IGNORE_PATTERN='index.html'
     fi
 
-    # Decide tree options
-    TREE_OPTS=(-H '.' -L 1 --noreport --dirsfirst -T "$TITLE" --charset utf-8 -I "$IGNORE_PATTERN" -o "$DIR/index.html" "$DIR")
+    # tree >= 2.2.1 puts the directory argument into every href when it is
+    # not "."  (it was an absolute path here, giving /home/runner/... links).
+    # Run tree from inside the directory and list "." so hrefs stay relative.
+    TREE_OPTS=(-H '.' -L 1 --noreport --dirsfirst -T "$TITLE" --charset utf-8 -I "$IGNORE_PATTERN" -o index.html .)
     [[ "$SHOW_LAST_MODIFIED" == "true" ]] && TREE_OPTS+=(-s -D)
 
-    tree "${TREE_OPTS[@]}"
+    (cd "$DIR" && tree "${TREE_OPTS[@]}")
 done
 
 echo "All directory listings generated successfully."
